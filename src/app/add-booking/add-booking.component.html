@@ -1,0 +1,61 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <form class="clr-form" #f='ngForm'>
+    <div class="clr-form-control">
+      <label for="patient" class="clr-control-label">Patient Name</label>
+      <div class="clr-control-container">
+        <div class="clr-input-wrapper">
+          <input #personName="ngModel" type="text" id="patient" class="clr-input" name="patient" [(ngModel)]="patientName" required>
+          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+        </div>
+        <span *ngIf="!personName.valid && personName.touched" class="text-warning">Please enter a valid name!</span>
+      </div>
+    </div>
+
+    <div class="clr-form-control">
+      <label for="bookingDate" class="clr-control-label">Booking Treatment Date</label>
+      <mat-form-field>
+        <input
+          matInput
+          [min]="minTreatDay"
+          [matDatepicker]="picker"
+          (dateChange)="dateChange($event.value)"
+          [matDatepickerFilter]="dateFilter"
+          required
+          placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+
+    <div>
+      <div class="card" *ngFor="let item of processList">
+        <div class="card-block">
+          <div class="card-title">
+            {{item.title}}
+          </div>
+          <div class="card-text">
+            {{item.content}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start center" class="m-t-2">
+      <button [disabled]="!f.valid || !processingDays" class="btn btn-primary" type="button" (click)="addBooking()">Submit</button>
+    </div>
+
+  </form>
+</div>
+
+<clr-modal #clrModal [(clrModalOpen)]="modalOpened">
+  <h3 class="modal-title">Confirmation</h3>
+  <div class="modal-body">
+    <p>Are you sure you want to add this booking?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="cancelConfirmation()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="submitBooking()">Ok</button>
+  </div>
+</clr-modal>
+
