@@ -1,0 +1,37 @@
+<div *ngIf="bookings | async; let bookings; else loading">
+  <div class="m-1" *ngFor="let booking of bookings">
+    <div class="card" (click)="showBookingInfo(booking)">
+      <div class="card-block">
+        <p class="card-text">
+          id: {{booking?.id}}
+        </p>
+        <p class="card-text">
+          Patient Name: {{booking?.patientName}}
+        </p>
+        <p class="card-text">
+          Infusion / Treatment Day: {{booking?.dates?.treatDayStart | date}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="text-center m-t-2">
+    <span class="spinner">
+      Loading...
+    </span>
+  </div>
+</ng-template>
+
+<clr-modal #clrModal [(clrModalOpen)]="modalOpened">
+  <h3 class="modal-title">Information</h3>
+  <div class="modal-body">
+    <p>Deliver Collection Kit: {{selectedBooking?.dates.deliverCollectionKitStart | date}}</p>
+    <p>Surgery/Apheresis: {{selectedBooking?.dates.surgeryStart | date}}</p>
+    <p>Specimen Processing: {{selectedBooking?.dates.specimenProcessStart | date}} - {{selectedBooking?.dates.specimenProcessEnd | date}}</p>
+    <p>Manufacturing: {{selectedBooking?.dates.manufacturingStart | date}} - {{selectedBooking?.dates.manufacturingEnd | date}}</p>
+    <p>Infusion/Treatment Day: {{selectedBooking?.dates.treatDayStart | date}}</p>
+  </div>
+
+</clr-modal>
